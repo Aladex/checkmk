@@ -151,11 +151,17 @@ def valuespec_alert_remapping():
 
 def _check_parameters_valuespec_alertmanager():
     return Dictionary(
-        title=_("Alert mangager rule state"),
+        title=_("Alert manager rule state"),
         elements=[
+            ("detailed_nested_alerts", FixedValue(
+                False,
+                title=_("Show nested alerts"),
+                totext="",
+                default_value=False
+            )),
             ("alert_remapping", valuespec_alert_remapping()),
         ],
-        optional_keys=["alert_remapping"],
+        optional_keys=["alert_remapping", "detailed_nested_alerts"],
         default_keys=["alert_remapping"],
     )
 

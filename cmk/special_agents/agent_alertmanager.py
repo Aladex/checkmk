@@ -39,11 +39,19 @@ class IgnoreAlerts(TypedDict, total=False):
     ignore_alert_groups: List[str]
 
 
+class Alert(TypedDict):
+    name: str
+    state: str
+    severity: Optional[str]
+    message: Optional[str]
+
+
 class Rule(TypedDict):
     name: str
     state: str
     severity: Optional[str]
     message: Optional[str]
+    alerts: Optional[List[Alert]]
 
 
 Groups = Dict[str, List[Rule]]
@@ -89,6 +97,22 @@ def retrieve_rule_data(api_client: AlertmanagerAPI) -> Dict[str, Any]:
     return json.loads(endpoint_result.content)["data"]
 
 
+def parse_alerts_data(rule_entry: Dict[str, Any]) -> List[Alert]:
+    alerts_list = []
+    for alert_entry in rule_entry.get("alerts", []):
+        labels = alert_entry.get("labels", {})
+        annotations = alert_entry.get("annotations", {})
+        alerts_list.append(
+            Alert(
+                name=alert_entry.get("name"),
+                state=alert_entry.get("state"),
+                severity=labels.get("severity"),
+                message=annotations.get("message")
+            )
+        )
+    return alerts_list
+
+
 def parse_rule_data(group_data: List[Dict[str, Any]], ignore_alerts: IgnoreAlerts) -> Groups:
     """Parses data from Alertmanager API endpoint
 
@@ -112,12 +136,14 @@ def parse_rule_data(group_data: List[Dict[str, Any]], ignore_alerts: IgnoreAlert
 
             labels = rule_entry.get("labels", {})
             annotations = rule_entry.get("annotations", {})
+            alerts = parse_alerts_data(rule_entry)
             rule_list.append(
                 Rule(
                     name=rule_entry["name"],
                     state=rule_entry.get("state"),
                     severity=labels.get("severity"),
                     message=annotations.get("message"),
+                    alerts=alerts
                 )
             )
         groups[group_entry["name"]] = rule_list

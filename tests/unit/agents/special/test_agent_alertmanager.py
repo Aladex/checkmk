@@ -33,6 +33,29 @@ DATA = {
                     "labels": {"severity": "warning"},
                     "annotations": {"message": "bar"},
                 },
+                {
+                    "state": "warning",
+                    "name": "test-rule-3",
+                    "labels": {"severity": "warning"},
+                    "annotations": {"message": "bar"},
+                    "alerts":
+                        [
+                            {
+                                "state": "warning",
+                                "name": "test-alert-1",
+                                "annotations": {
+                                    "message": "test-alert-1 warning",
+                                },
+                            },
+                            {
+                                "state": "warning",
+                                "name": "test-alert-2",
+                                "annotations": {
+                                    "message": "test-alert-2 warning",
+                                }
+                            }
+                        ]
+                },
             ],
         },
         {
@@ -48,6 +71,29 @@ DATA = {
                     "name": "test-rule-b",
                     "labels": {"severity": "warning"},
                     "annotations": {"message": "bar"},
+                },
+                {
+                    "state": "firing",
+                    "name": "test-rule-c",
+                    "labels": {"severity": "firing"},
+                    "annotations": {"message": "bar"},
+                    "alerts":
+                        [
+                            {
+                                "state": "firing",
+                                "name": "test-alert-c-1",
+                                "annotations": {
+                                    "message": "test-alert-1 firing",
+                                },
+                            },
+                            {
+                                "state": "firing",
+                                "name": "test-alert-c-2",
+                                "annotations": {
+                                    "message": "test-alert-c-2 firing",
+                                }
+                            }
+                        ]
                 },
             ],
         },

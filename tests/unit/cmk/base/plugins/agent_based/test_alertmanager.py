@@ -86,6 +86,7 @@ def test_alertmanager_get_rule_state_remapping(
         status=alertmanager_rule_state,
         severity=alertmanager.Severity.WARNING,
         message="fööbär",
+        alerts=[]
     )
     assert alertmanager._get_rule_state(rule, params) == status
 
