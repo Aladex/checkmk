@@ -208,7 +208,7 @@ def check_alertmanager_rules(item: str, params: CheckParams, section: Section) -
                     +
                     "\nAlert messages:\n"
                     +
-                    "\n".join([alert.get("message", "No message") for alert in rule.alerts]),
+                    "\n".join([alert.message if alert.message else "No message" for alert in rule.alerts]),
                 )
 
 
